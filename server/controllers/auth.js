@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const {User} = require("../models/User");
-const genAuthToken = require("../util/AuthToken");
+const genAuthToken = require("../utils/AuthToken");
 
 
 /* REGISTER USER */
