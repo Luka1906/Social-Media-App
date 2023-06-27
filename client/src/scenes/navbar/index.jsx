@@ -10,6 +10,7 @@ import {
   Drawer,
   useTheme,
   useMediaQuery,
+  Tooltip,
 } from "@mui/material";
 import {
   Search,
@@ -67,7 +68,7 @@ const Navbar = () => {
             gap="3rem"
             paddingBottom="0.1rem 1.5rem"
           >
-            <InputBase sx={{padding: "0 1rem"}} placeholder="Search..." />
+            <InputBase sx={{ padding: "0 1rem" }} placeholder="Search..." />
             <IconButton>
               <Search />
             </IconButton>
@@ -77,16 +78,39 @@ const Navbar = () => {
       {/* DESKTOP nav */}
       {isNotMobile ? (
         <FlexBetween gap="2rem">
-          <IconButton onClick={() => dispatch(setMode())}>
-            {theme.palette.mode === "dark" ? (
-              <DarkMode sx={{ fontSize: "25px" }} />
-            ) : (
-              <LightMode sx={{ color: dark, fontSize: "25px" }} />
-            )}
-          </IconButton>
-          <Message sx={{ fontSize: "25px" }} />
-          <Notifications sx={{ fontSize: "25px" }} />
-          <Help sx={{ fontSize: "25px" }} />
+          <Tooltip
+            title={<Typography variant="body2" component="p" p="0.2rem">Light Switch</Typography>}
+            sx={{
+              "& .MuiTooltip-tooltip": {
+                fontSize: "4rem"
+              },
+            }}
+            arrow
+          >
+            <IconButton onClick={() => dispatch(setMode())}>
+              {theme.palette.mode === "dark" ? (
+                <DarkMode sx={{ fontSize: "25px" }} />
+              ) : (
+                <LightMode sx={{ color: dark, fontSize: "25px" }} />
+              )}
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={<Typography variant="body2" component="p" p="0.2rem">Messages</Typography>} arrow>
+            <IconButton>
+              <Message sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={<Typography variant="body2" component="p" p="0.2rem">Notifications</Typography>} arrow>
+            <IconButton>
+              <Notifications sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={<Typography variant="body2" component="p" p="0.2rem">Help</Typography>} arrow>
+            <IconButton>
+              <Help sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
+          </Tooltip>
+
           <FormControl variant="standard" value="Luka Matovic">
             <Select
               value="Luka Matovic"
@@ -114,33 +138,33 @@ const Navbar = () => {
         </FlexBetween>
       ) : (
         <IconButton onClick={() => setMobileMenuToggled(!mobileMenuToggled)}>
-          <Menu />
+          <Menu sx={{ fontSize: "1.5rem" }} />
         </IconButton>
       )}
       {/* MOBILE NAV */}
 
-      {!isNotMobile && mobileMenuToggled && (
-      
-
-
-          <Box
-            position="fixed"
-            right="0"
-            bottom="0"
-            height="100%"
-            zIndex="10"
-            maxWidth="500px"
-            minWidth="300px"
-            backgroundColor={background}
-          >
-            {/* CLOSE ICON */}
+      <Drawer
+        anchor="right"
+        open={mobileMenuToggled}
+        onClick={() => setMobileMenuToggled(!mobileMenuToggled)}
+      >
+        <Box
+          height="100%"
+          maxWidth="500px"
+          minWidth="300px"
+          backgroundColor={background}
+        >
+          {/* CLOSE ICON */}
+          <Box>
             <Box display="flex" justifyContent="flex-end" p="1rem">
-            <IconButton
-              onClick={() => setMobileMenuToggled(!mobileMenuToggled)}
-            >
-              <Close />
-            </IconButton>
+              <IconButton
+                onClick={() => setMobileMenuToggled(!mobileMenuToggled)}
+              >
+                <Close sx={{ fontSize: "1.5rem" }} />
+              </IconButton>
+            </Box>
           </Box>
+
           {/* MENU ITEMS */}
 
           <FlexBetween
@@ -160,9 +184,16 @@ const Navbar = () => {
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
-            <Help sx={{ fontSize: "25px" }} />
+            <IconButton>
+            <Message sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
+            <IconButton>
+            <Notifications sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
+            <IconButton>
+            <Help sx={{ color: dark, fontSize: "25px" }} />
+            </IconButton>
+          
             <FormControl variant="standard" value="Luka Matovic">
               <Select
                 value="Luka Matovic"
@@ -191,7 +222,7 @@ const Navbar = () => {
             </FormControl>
           </FlexBetween>
         </Box>
-      )}
+      </Drawer>
     </FlexBetween>
   );
 };

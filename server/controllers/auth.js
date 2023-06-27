@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const {User} = require("../models/User");
+const User = require("../models/User");
 const genAuthToken = require("../utils/AuthToken");
 
 
@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
         location,
         occupation,
         viewedProfile: Math.floor(Math.random() * 10000),
-        impressions: Math.florr(Math.random() * 10000)
+        impressions: Math.floor(Math.random() * 10000)
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser)
@@ -49,7 +49,7 @@ exports.login = async (req,res) => {
     const isMatched = await bcrypt.compare(password, user.password);
     if(!isMatched) return res.status(400).json({msg: "Invalid credentials."});
     const token = genAuthToken(user);
-    delete user.password;
+    delete user.password; 
     res.status(200).json({token, user});
   }
   catch (err) {
