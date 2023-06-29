@@ -9,8 +9,8 @@ const router = express.Router();
 router.get("/:id", verifyToken, getUser);
 router.get("/:id/friends", verifyToken, getUserFriends);
 
-/* PATCH */
+/* PUT */
 
-router.patch("/:id/:friendId", verifyToken, addRemoveFriend);
+router.put("/:id/:friendId", verifyToken, addRemoveFriend);
 
 module.exports = router;
