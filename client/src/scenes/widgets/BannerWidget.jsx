@@ -19,7 +19,7 @@ const BannerWidget = () => {
         width="100%"
         height="auto"
         alt="banner"
-        src="http://localhost:4000/assets/info4.jpeg"
+        src="https://crazy-red-bandanna.cyclic.app/assets/info4.jpeg"
         style={{borderRadius: "0.75rem", margin:"0.75rem 0"}}
       />
       <FlexBetween>

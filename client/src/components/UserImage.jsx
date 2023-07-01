@@ -8,7 +8,7 @@ const UserImage = ({image, size="60px"}) => {
             width={size}
             height={size}
             alt="user"
-            src={`http://localhost:4000/assets/${image}`}
+            src={`https://crazy-red-bandanna.cyclic.app/assets/${image}`}
             />
 
         </Box>

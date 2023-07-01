@@ -37,7 +37,7 @@ const PostWidget = ({
 
 
   const likesHandler = async () => {
-    const response = await fetch(`http://localhost:4000/posts/${postId}/like`, {
+    const response = await fetch(`https://crazy-red-bandanna.cyclic.app/posts/${postId}/like`, {
       method: "PUT",
       headers: {
         "Authorization": `Bearer ${token}`,
@@ -66,7 +66,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:4000/assets/${picturePath}`}
+          src={`https://crazy-red-bandanna.cyclic.app/assets/${picturePath}`}
         />
       )}
       <FlexBetween mt="0.25rem">
