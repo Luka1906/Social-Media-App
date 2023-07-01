@@ -25,7 +25,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const friendsHandler = async () => {
     const response = await fetch(
-      `https://crazy-red-bandanna.cyclic.app/users/${_id}/${friendId}`,
+      `${process.env.REACT_APP_SERVER_URL}users/${_id}/${friendId}`,
       {
         method: "PUT",
         headers: {

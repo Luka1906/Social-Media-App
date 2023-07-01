@@ -22,7 +22,7 @@ const UserWidget = ({ userId, picturePath }) => {
   const main = palette.neutral.main;
 
   const getUser = async () => {
-    const response = await fetch(`https://crazy-red-bandanna.cyclic.app/users/${userId}`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}users/${userId}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

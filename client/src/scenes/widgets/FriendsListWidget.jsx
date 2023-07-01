@@ -12,7 +12,7 @@ const FriendsListWidget = ({userId}) => {
     const friends = useSelector((state) => state.user.friends);
 
     const getFriends = async () => {
-        const response = await fetch(`https://crazy-red-bandanna.cyclic.app/users/${userId}/friends`,
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}users/${userId}/friends`,
         {
             method: "GET",
             headers: {"Authorization": `Bearer ${token}`}

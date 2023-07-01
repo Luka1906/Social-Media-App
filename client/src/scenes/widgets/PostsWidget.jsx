@@ -9,7 +9,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const token = useSelector((state) => state.token);
 
   const getPostsHandler = async () => {
-    const response = await fetch("https://crazy-red-bandanna.cyclic.app/posts", {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}posts`, {
       method: "GET",
       headers: { "Authorization": `Bearer ${token}` },
     });
@@ -19,7 +19,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getUserPostsHandler = async () => {
     const response = await fetch(
-      `https://crazy-red-bandanna.cyclic.app/posts/${userId}/posts`,
+      `${process.env.REACT_APP_SERVER_URL}posts/${userId}/posts`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

@@ -46,7 +46,7 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
-    const response = await fetch("https://crazy-red-bandanna.cyclic.app/posts", {
+    const response = await fetch("https://social-media-7sek.onrender.com/posts", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

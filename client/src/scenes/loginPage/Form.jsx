@@ -57,7 +57,7 @@ const Form = () => {
     console.log(values)
     
 
-    const savedUserResponse = await fetch("https://crazy-red-bandanna.cyclic.app/auth/register",{
+    const savedUserResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}auth/register`,{
         method: "POST",
         body: formData
     });
@@ -70,7 +70,7 @@ const Form = () => {
   }
 
 const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("https://crazy-red-bandanna.cyclic.app/auth/login",{
+    const loggedInResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}auth/login`,{
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(values)
