@@ -12,18 +12,16 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
-
-
- 
+  console.log(friends);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
- console.log(friends)
-  const isFriend = friends.find((friend) => friend._id === friendId);
 
+  const isFriend = friends.find((friend) => friend._id === friendId);
+  const isAdmin = friendId === _id;
 
   const friendsHandler = async () => {
     const response = await fetch(
@@ -67,16 +65,18 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      <IconButton
-        onClick={() => friendsHandler()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        )}
-      </IconButton>
+      {!isAdmin && (
+        <IconButton
+          onClick={() => friendsHandler()}
+          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        >
+          {isFriend ? (
+            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          ) : (
+            <PersonAddOutlined sx={{ color: primaryDark }} />
+          )}
+        </IconButton>
+      )}
     </FlexBetween>
   );
 };

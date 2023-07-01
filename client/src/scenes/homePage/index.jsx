@@ -1,7 +1,7 @@
 import { Box, useMediaQuery } from "@mui/material";
 import Navbar from "../navbar";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+
 import UserWidget from "../widgets/UserWidget";
 import MyPostWidget from "../widgets/MyPostWidget";
 import PostsWidget from "../widgets/PostsWidget";
