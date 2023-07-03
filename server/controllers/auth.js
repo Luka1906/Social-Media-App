@@ -3,10 +3,16 @@ const User = require("../models/User");
 const genAuthToken = require("../utils/AuthToken");
 
 
+
 /* REGISTER USER */
 
 exports.register = async (req, res) => {
+ 
+  let user = await User.findOne({email:req.body.email});
+  if(user) return res.status(409).json({msg: "User with the same email already exist!"})
+
   try {
+
     const {
       firstName,
       lastName,
@@ -45,9 +51,9 @@ exports.login = async (req,res) => {
   try {
     const {email, password} = req.body;
     const user = await User.findOne({email:email});
-    if(!user) return res.status(400).json({msg: "User does not exist."});
+    if(!user) return res.status(400).json({msg: "User does not exist. Try again!"});
     const isMatched = await bcrypt.compare(password, user.password);
-    if(!isMatched) return res.status(400).json({msg: "Invalid credentials."});
+    if(!isMatched) return res.status(400).json({msg: "Invalid password. Try again!"});
     const token = genAuthToken(user);
     delete user.password; 
     res.status(200).json({token, user});
@@ -56,3 +62,4 @@ exports.login = async (req,res) => {
     res.status(500).json({error: err.message})
   }
 }
+

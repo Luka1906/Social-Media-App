@@ -1,5 +1,6 @@
-import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery} from "@mui/material";
 import Form from "./Form";
+import Logo from "../../components/Logo";
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -10,11 +11,22 @@ const LoginPage = () => {
         width="100%"
         backgroundColor={theme.palette.background.alt}
         p="1rem 6%"
-        textAlign="center"
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        
+       
+     
       >
         <Typography fontWeight="bold" fontSize="32px" color="primary">
           Socializer
         </Typography>
+        <Box ml="7.5rem">
+        <Logo/>
+        </Box>
+   
+       
+
       </Box>
       <Box
         width={isNotMobile ? "50%" : "93%"}

@@ -32,7 +32,7 @@ const MyPostWidget = ({ picturePath }) => {
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
-  const { _id } = useSelector((state) => state.user);
+  const { _id, firstName } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const isNotMobile = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
@@ -58,10 +58,10 @@ const MyPostWidget = ({ picturePath }) => {
   };
   return (
     <WidgetWrapper>
-      <FlexBetween gap="1.5rem">
+      <FlexBetween>
         <UserImage image={picturePath} />
         <InputBase
-          placeholder="What's on your mind..."
+          placeholder={`What's on your mind, ${firstName}?`}
           onChange={(e) => setPost(e.target.value)}
           value={post}
           sx={{

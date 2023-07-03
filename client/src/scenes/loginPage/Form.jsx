@@ -22,7 +22,7 @@ const initialValuesRegister = {
   firstName: "",
   lastName: "",
   email: "",
-  password: "", 
+  password: "",
   location: "",
   occupation: "",
   picture: "",
@@ -33,11 +33,11 @@ const initialValuesLogin = {
   password: "",
 };
 
-console.log(initialValuesLogin);
-
 const Form = () => {
   const [formType, setFormType] = useState("login");
-  const {palette }= useTheme();
+  const [loginError, setLoginError] = useState("");
+  const [registerError, setRegisterError] = useState("");
+  const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNotMobile = useMediaQuery("(min-width: 600px)");
@@ -45,55 +45,68 @@ const Form = () => {
   const isRegister = formType === "register";
 
   const register = async (values, onSubmitProps) => {
-
     // this allow us to send form info with image
-    
+
     const formData = new FormData();
-    for(let value in values) {
-        formData.append(value, values[value])
-        console.log(value, values[value])
+    for (let value in values) {
+      formData.append(value, values[value]);
+      console.log(value, values[value]);
     }
-    formData.append('picturePath', values.picture.name);
-    console.log(values)
-    
+    formData.append("picturePath", values.picture.name);
+    console.log(values);
 
-    const savedUserResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}auth/register`,{
+    const savedUserResponse = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}auth/register`,
+      {
         method: "POST",
-        body: formData
-    });
-    const savedUser = await savedUserResponse.json();
+        body: formData,
+      }
+    );
+    const savedUserData = await savedUserResponse.json();
     onSubmitProps.resetForm();
 
-    if(savedUser) {
-        setFormType("login")
-    }
-  }
-
-const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch(`${process.env.REACT_APP_SERVER_URL}auth/login`,{
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(values)
-    });
-    const loggedIn = await loggedInResponse.json();
-
-    onSubmitProps.resetForm();
-    if(loggedInResponse.status === 400) {
-        return loggedInResponse
-    } else {
-        dispatch(
-            setLogin({
-                user: loggedIn.user,
-                token: loggedIn.token
-            })
-        );
-        navigate("/home")
+    if(savedUserResponse.status === 409) {
+      setRegisterError(savedUserData.msg)
     } 
+
+    if (savedUserResponse.ok) {
+      setFormType("login");
+    }
+  };
+
+  const login = async (values, onSubmitProps) => {
+    const loggedInResponse = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}auth/login`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      }
+    );
+    const loggedInData = await loggedInResponse.json();
+
+    onSubmitProps.resetForm();
+    if (loggedInResponse.status === 400) {
+      setLoginError(loggedInData.msg);
+    } else {
+      dispatch(
+        setLogin({
+          user: loggedInData.user,
+          token: loggedInData.token,
+        })
+      );
+      navigate("/home");
+    }
+  };
+
+  const clearError = () => {
+    if(registerError) setRegisterError("")
+    if (loginError) setLoginError("")
   }
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    if(isLogin) await login(values, onSubmitProps);
-    if(isRegister) await register (values, onSubmitProps)
+    if (isLogin) await login(values, onSubmitProps);
+    if (isRegister) await register(values, onSubmitProps);
   };
 
   return (
@@ -180,87 +193,91 @@ const login = async (values, onSubmitProps) => {
                       setFieldValue("picture", acceptedFiles[0])
                     }
                   >
-                    {({getRootProps, getInputProps})=> (
-                        <Box
+                    {({ getRootProps, getInputProps }) => (
+                      <Box
                         {...getRootProps()}
                         border={`2px dashed ${palette.primary.main}`}
                         p="1rem"
-                        sx={{"&:hover": {cursor: "pointer"}}}
-                        >
-                            <input {...getInputProps()}/>
-                            {!values.picture? (
-                                <p>Add Picture Here</p>
-                            ) : (
-                                <FlexBetween>
-                                    <Typography>{values.picture.name}</Typography>
-                                    <EditOutlinedIcon/>
-                                </FlexBetween>
-                            )}
-                             
-
-                        </Box>
-
+                        sx={{ "&:hover": { cursor: "pointer" } }}
+                      >
+                        <input {...getInputProps()} />
+                        {!values.picture ? (
+                          <p>Add Picture Here</p>
+                        ) : (
+                          <FlexBetween>
+                            <Typography>{values.picture.name}</Typography>
+                            <EditOutlinedIcon />
+                          </FlexBetween>
+                        )}
+                      </Box>
                     )}
                   </Dropzone>
                 </Box>
+               
               </>
+              
             )}
 
-<TextField
-                  label="Email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.email}
-                  name="email"
-                  error={Boolean(touched.email) && Boolean(errors.email)}
-                  helperText={touched.email && errors.email}
-                  sx={{ gridColumn: "span 2" }}
-                /> 
-                <TextField
-                  label="Password"
-                  type="password"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.password}
-                  name="password"
-                  error={Boolean(touched.password) && Boolean(errors.password)}
-                  helperText={touched.password && errors.password}
-                  sx={{ gridColumn: "span 2" }}
-                /> 
+            <TextField
+              label="Email"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.email}
+              name="email"
+              error={Boolean(touched.email) && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.password}
+              name="password"
+              error={Boolean(touched.password) && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <Box  sx={{ gridColumn: "span 4" }} textAlign="center" >
+              <Typography color="error" fontSize="16px" fontWeight="500">{loginError? loginError : registerError}</Typography>
+            </Box>
           </Box>
 
           {/* BUTTONS */}
           <Box>
             <Button
-            fullWidth
-            type="submit"
-            sx={{
+             fullWidth
+              type="submit"
+              sx={{
                 m: "2rem 0",
                 p: "1rem",
                 backgroundColor: palette.primary.main,
                 color: palette.background.alt,
-                "&:hover": {color: palette.primary.main}
-
-            }}
+                "&:hover": { color: palette.primary.main },
+              }}
             >
-                {isLogin? "LOGIN" : "REGISTER"}
+              {isLogin ? "LOGIN" : "REGISTER"}
             </Button>
             <Typography
-            onClick={()=> {
-                setFormType(isLogin?  "register" : "login")
-                resetForm()
-            }}
-            sx={{
+              onClick={() => {
+                setFormType(isLogin ? "register" : "login");
+                resetForm();
+                clearError()
+
+              }}
+              sx={{
                 textDecoration: "underline",
                 color: palette.primary.main,
                 "&:hover": {
-                    cursor: "pointer",
-                    color: palette.primary.light
-                }
-            }}
+                  cursor: "pointer",
+                  color: palette.primary.light,
+                },
+              }}
             >
-                {isLogin ? "Don't have an account? Sign up here." : "Already have an account? Login here."}
-
+              {isLogin
+                ? "Don't have an account? Sign up here."
+                : "Already have an account? Login here."}
             </Typography>
           </Box>
         </form>
@@ -270,4 +287,3 @@ const login = async (values, onSubmitProps) => {
 };
 
 export default Form;
-

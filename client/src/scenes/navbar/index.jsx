@@ -11,6 +11,7 @@ import {
   useTheme,
   useMediaQuery,
   Tooltip,
+  Badge,
 } from "@mui/material";
 import {
   Search,
@@ -27,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "../../store";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
+import Logo from "../../components/Logo";
 
 const Navbar = () => {
   const [mobileMenuToggled, setMobileMenuToggled] = useState(false);
@@ -46,7 +48,7 @@ const Navbar = () => {
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
-      <FlexBetween gap="1.75rem">
+      <FlexBetween >
         <Typography
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.25rem)"
@@ -59,7 +61,7 @@ const Navbar = () => {
             },
           }}
         >
-          Socializer
+         <Logo/>
         </Typography>
         {isNotMobile && (
           <FlexBetween
@@ -79,10 +81,14 @@ const Navbar = () => {
       {isNotMobile ? (
         <FlexBetween gap="2rem">
           <Tooltip
-            title={<Typography variant="body2" component="p" p="0.2rem">Light Switch</Typography>}
+            title={
+              <Typography variant="body2" component="p" p="0.2rem">
+                Light Switch
+              </Typography>
+            }
             sx={{
               "& .MuiTooltip-tooltip": {
-                fontSize: "4rem"
+                fontSize: "4rem",
               },
             }}
             arrow
@@ -95,17 +101,42 @@ const Navbar = () => {
               )}
             </IconButton>
           </Tooltip>
-          <Tooltip title={<Typography variant="body2" component="p" p="0.2rem">Messages</Typography>} arrow>
+          <Tooltip
+            title={
+              <Typography variant="body2" component="p" p="0.2rem">
+                Messages
+              </Typography>
+            }
+            arrow
+          >
             <IconButton>
-              <Message sx={{ color: dark, fontSize: "25px" }} />
+              <Badge badgeContent={2} color="primary">
+                <Message sx={{ color: dark, fontSize: "25px" }} />
+              </Badge>
             </IconButton>
           </Tooltip>
-          <Tooltip title={<Typography variant="body2" component="p" p="0.2rem">Notifications</Typography>} arrow>
+          <Tooltip
+            title={
+              <Typography variant="body2" component="p" p="0.2rem">
+                Notifications
+              </Typography>
+            }
+            arrow
+          >
             <IconButton>
-              <Notifications sx={{ color: dark, fontSize: "25px" }} />
+              <Badge badgeContent={4} color="primary">
+                <Notifications sx={{ color: dark, fontSize: "25px" }} />
+              </Badge>
             </IconButton>
           </Tooltip>
-          <Tooltip title={<Typography variant="body2" component="p" p="0.2rem">Help</Typography>} arrow>
+          <Tooltip
+            title={
+              <Typography variant="body2" component="p" p="0.2rem">
+                Help
+              </Typography>
+            }
+            arrow
+          >
             <IconButton>
               <Help sx={{ color: dark, fontSize: "25px" }} />
             </IconButton>
@@ -116,7 +147,7 @@ const Navbar = () => {
               value={fullName}
               sx={{
                 backgroundColor: neutralLight,
-           
+
                 borderRadius: "0.25rem",
                 p: "0.25rem 1rem",
                 "& .MuiSvgIcon-root": {
@@ -185,15 +216,15 @@ const Navbar = () => {
               )}
             </IconButton>
             <IconButton>
-            <Message sx={{ color: dark, fontSize: "25px" }} />
+              <Message sx={{ color: dark, fontSize: "25px" }} />
             </IconButton>
             <IconButton>
-            <Notifications sx={{ color: dark, fontSize: "25px" }} />
+              <Notifications sx={{ color: dark, fontSize: "25px" }} />
             </IconButton>
             <IconButton>
-            <Help sx={{ color: dark, fontSize: "25px" }} />
+              <Help sx={{ color: dark, fontSize: "25px" }} />
             </IconButton>
-          
+
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}

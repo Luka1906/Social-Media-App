@@ -13,8 +13,8 @@ const postRoutes = require('./routes/posts')
 const {register} = require("./controllers/auth");
 const {createPost} = require("./controllers/posts")
 const {verifyToken} = require("./middleware/auth");
-const User = require("./models/User");
-const Post = require("./models/Post");
+// const User = require("./models/User");
+// const Post = require("./models/Post");
 const {users,posts }= require("./data/index")
 
 
@@ -30,7 +30,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 
 
- app.use(cors());
+app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
 /* FILE STORAGE */
