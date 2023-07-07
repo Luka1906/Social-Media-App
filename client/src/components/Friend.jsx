@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFriends } from "../store";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
+  const paramsId = useParams();
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
 
@@ -20,7 +21,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const medium = palette.neutral.medium;
 
   const isFriend = friends.find((friend) => friend._id === friendId);
-  const isAdmin = friendId === _id;
+  const isNotAdmin = friendId === _id;
+  const isFriendProfile = paramsId.userId === _id || paramsId.userId === undefined
+
 
   const friendsHandler = async () => {
     const response = await fetch(
@@ -64,7 +67,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {!isAdmin && (
+      {!isNotAdmin   && isFriendProfile && (
         <IconButton
           onClick={() => friendsHandler()}
           sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
