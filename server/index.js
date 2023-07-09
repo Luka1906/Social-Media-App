@@ -13,8 +13,8 @@ const postRoutes = require('./routes/posts')
 const {register} = require("./controllers/auth");
 const {createPost} = require("./controllers/posts")
 const {verifyToken} = require("./middleware/auth");
-// const User = require("./models/User");
-// const Post = require("./models/Post");
+const User = require("./models/User");
+const Post = require("./models/Post");
 const {users,posts }= require("./data/index")
 
 /* CONFIGURATIONS */
@@ -66,6 +66,6 @@ mongoose
     app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
     // /* ADD DATA ONE TIME */
-    // User.insertMany(users);
-    // Post.insertMany(posts);
+    User.insertMany(users);
+    Post.insertMany(posts);
   }).catch((error)=> console.log(`${error} did not connect `))
