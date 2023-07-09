@@ -17,7 +17,6 @@ const {verifyToken} = require("./middleware/auth");
 // const Post = require("./models/Post");
 const {users,posts }= require("./data/index")
 
-
 /* CONFIGURATIONS */
 
 dotenv.config();
