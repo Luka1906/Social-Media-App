@@ -21,7 +21,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const medium = palette.neutral.medium;
 
   const isFriend = friends.find((friend) => friend._id === friendId);
-  const isNotAdmin = friendId === _id;
+  const isAdmin = friendId === _id;
   const isFriendProfile = paramsId.userId === _id || paramsId.userId === undefined
 
 
@@ -67,10 +67,10 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {!isNotAdmin   && isFriendProfile && (
+      {!isAdmin   && isFriendProfile && (
         <IconButton
-          onClick={() => friendsHandler()}
-          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          onClick={friendsHandler}
+          sx={{ backgroundColor: primaryLight, p: "0.6rem"}}
         >
           {isFriend ? (
             <PersonRemoveOutlined sx={{ color: primaryDark }} />

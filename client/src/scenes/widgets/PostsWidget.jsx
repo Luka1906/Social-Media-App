@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../store";
 import PostWidget from "./PostWidget";
+import { Box } from "@mui/material";
 
 const PostsWidget = ({ userId, isProfile}) => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const PostsWidget = ({ userId, isProfile}) => {
 
 
   return (
-    <>
+    <Box display="flex" flexDirection="column-reverse">
       {posts.map(
         ({
           _id,
@@ -68,7 +69,7 @@ const PostsWidget = ({ userId, isProfile}) => {
           comments = {comments} />
         )
       )}
-    </>
+    </Box>
   );
 };
 
