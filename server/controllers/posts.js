@@ -77,7 +77,7 @@ exports.likePost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   try {
-    const { id, postId } = req.params;
+    const { id} = req.params;
 
     const post = await Post.findById(id);
 
@@ -87,7 +87,7 @@ exports.deletePost = async (req, res) => {
       if (post.picturePath) {
         fileHelper.deleteFile(`public/assets/${post.picturePath}`);
       }
-      const deletedPost = await Post.deleteOne({ userId: postId, _id: id });
+      const deletedPost = await Post.deleteOne({ _id: id });
 
       res.status(200).json({ message: "Success! Post deleted!", deletedPost });
     }

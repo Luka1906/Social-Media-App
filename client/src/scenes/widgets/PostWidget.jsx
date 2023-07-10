@@ -74,7 +74,7 @@ const PostWidget = ({
   
   const deletePostHandler = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_SERVER_URL}posts/${postId}/${postUserId}/deletePost`,
+      `${process.env.REACT_APP_SERVER_URL}posts/${postId}/deletePost`,
       {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
