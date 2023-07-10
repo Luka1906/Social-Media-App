@@ -82,12 +82,12 @@ const PostWidget = ({
     );
   };
 
-    // let currentUrl = window.location.href;
-    // let length = currentUrl.length
-    // if(currentUrl.charAt(length-1) === "?") {
-    //  currentUrl = currentUrl.slice(0, length - 1)
-    //  window.history.pushState("", "", currentUrl)
-    // } 
+    let currentUrl = window.location.href;
+    let length = currentUrl.length
+    if(currentUrl.charAt(length-1) === "?") {
+     currentUrl = currentUrl.slice(0, length - 1)
+     window.history.pushState("", "", currentUrl)
+    } 
  
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -211,7 +211,7 @@ const PostWidget = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setIsOpen(!isOpen)}>Disagree</Button>
-            <form onSubmit={deletePostHandler}>
+            <form onSubmit={()=>deletePostHandler()}>
               <Button type="submit" autoFocus>
                 Agree
               </Button>
