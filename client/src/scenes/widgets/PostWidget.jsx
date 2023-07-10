@@ -29,7 +29,7 @@ import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useState ,useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../../store";
+import { setPost, setPosts } from "../../store";
 
 const PostWidget = ({
   postId,
@@ -80,6 +80,8 @@ const PostWidget = ({
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+    const {posts} = await response.json();
+    dispatch(setPosts({ post: posts }));
   };
 
     let currentUrl = window.location.href;
@@ -211,11 +213,14 @@ const PostWidget = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setIsOpen(!isOpen)}>Disagree</Button>
-            <form onSubmit={deletePostHandler}>
-              <Button type="submit" autoFocus>
+           <form onSubmit={deletePostHandler} method="get" action="/home">
+           <Button type="submit" autoFocus>
                 Agree
               </Button>
-            </form>
+
+           </form>
+            
+     
           </DialogActions>
         </Dialog>
       </FlexBetween>

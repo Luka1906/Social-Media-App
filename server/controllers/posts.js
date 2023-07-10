@@ -88,6 +88,7 @@ exports.deletePost = async (req, res) => {
         fileHelper.deleteFile(`public/assets/${post.picturePath}`);
       }
       const deletedPost = await Post.deleteOne({ _id: id });
+     
 
       res.status(200).json({ message: "Success! Post deleted!", deletedPost });
     }
