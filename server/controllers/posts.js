@@ -78,9 +78,8 @@ exports.likePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     const { id, postId } = req.params;
-    console.log(`This is param id - ${id}`);
+
     const post = await Post.findById(id);
-    console.log(`This is picture path ${post.picturePath}`);
 
     if (!post) {
       res.status(404).json({ message: "Post not found" });

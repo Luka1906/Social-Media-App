@@ -211,7 +211,7 @@ const PostWidget = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setIsOpen(!isOpen)}>Disagree</Button>
-            <form onSubmit={()=>deletePostHandler()}>
+            <form onSubmit={deletePostHandler}>
               <Button type="submit" autoFocus>
                 Agree
               </Button>
