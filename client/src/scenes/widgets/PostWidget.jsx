@@ -80,8 +80,9 @@ const PostWidget = ({
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    const {posts} = await response.json();
-    dispatch(setPosts({ post: posts }));
+    const {posts}= await response.json();
+
+    dispatch(setPosts({posts:posts}));
   };
 
     let currentUrl = window.location.href;
@@ -213,13 +214,10 @@ const PostWidget = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setIsOpen(!isOpen)}>Disagree</Button>
-           <form onSubmit={deletePostHandler} method="get" action="/home">
-           <Button type="submit" autoFocus>
+  
+           <Button onClick={deletePostHandler} onClickCapture={()=>setIsOpen(!isOpen)} autoFocus>
                 Agree
-              </Button>
-
-           </form>
-            
+              </Button>   
      
           </DialogActions>
         </Dialog>
