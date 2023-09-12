@@ -11,7 +11,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require("./routes/users")
 const postRoutes = require('./routes/posts')
 const {register} = require("./controllers/auth");
-const {createPost} = require("./controllers/posts")
+const {createPost, editPost} = require("./controllers/posts")
 const {verifyToken} = require("./middleware/auth");
 // const User = require("./models/User");
 // const Post = require("./models/Post");
@@ -39,21 +39,25 @@ const storage = multer.diskStorage({
     cb(null, "public/assets");
   },
   filename: function(req, file, cb) {
-    cb(null, file.originalname);
+    cb(null,  file.originalname);
   },
 });
 
 const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), register); 
+app.post("/auth/register", upload.single("picture" ), register); 
 app.post("/posts", verifyToken, upload.single("picture"), createPost)
+app.put("/posts/:id/editPost", verifyToken, upload.single("picture"),  editPost)
+
+
 
 /* ROUTES */
 
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 4000;

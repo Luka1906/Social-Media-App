@@ -7,6 +7,7 @@ import {
   HideSourceOutlined,
   DeleteOutline,
   MoreHorizOutlined,
+  CloseOutlined,
 } from "@mui/icons-material";
 
 import {
@@ -23,13 +24,16 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  useMediaQuery,
 } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
-import { useState ,useEffect} from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { setPost, setPosts } from "../../store";
+import EditModal from "../../components/EditModal";
 
 const PostWidget = ({
   postId,
@@ -44,8 +48,10 @@ const PostWidget = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
+
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likesCount = Object.keys(likes).length;
@@ -53,6 +59,8 @@ const PostWidget = ({
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
+
+  const isMobile = useMediaQuery("(max-width: 500px)");
 
   const likesHandler = async () => {
     const response = await fetch(
@@ -70,8 +78,6 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
-
-  
   const deletePostHandler = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}posts/${postId}/deletePost`,
@@ -80,18 +86,10 @@ const PostWidget = ({
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    const {posts}= await response.json();
+    const { posts } = await response.json();
 
-    dispatch(setPosts({posts:posts}));
+    dispatch(setPosts({ posts: posts }));
   };
-
-    let currentUrl = window.location.href;
-    let length = currentUrl.length
-    if(currentUrl.charAt(length-1) === "?") {
-     currentUrl = currentUrl.slice(0, length - 1)
-     window.history.pushState("", "", currentUrl)
-    } 
- 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -102,6 +100,11 @@ const PostWidget = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleModalOpen = () => {
+    setModalIsOpen(true);
+  };
+  const handleModalClose = () => setModalIsOpen(false);
 
   return (
     <WidgetWrapper m="2rem 0" position="relative">
@@ -119,7 +122,6 @@ const PostWidget = ({
         <Menu
           anchorEl={anchorEl}
           open={open}
-          onClose={handleClose}
           onClick={handleClose}
           PaperProps={{
             elevation: 0,
@@ -163,7 +165,7 @@ const PostWidget = ({
           </MenuItem>
 
           {loggedInUserId === postUserId && (
-            <>
+            <div>
               <Divider />
               <MenuItem
                 sx={{
@@ -171,11 +173,14 @@ const PostWidget = ({
                   flexDirection: "column",
                   alignItems: "flex-start",
                 }}
+                // onClick={()=>dispatch(setEditMode())}
+                onClick={handleModalOpen}
               >
                 <Box display="flex" gap=" 0.5rem" fontWeight="500">
                   <EditOutlined /> Edit Post
                 </Box>
               </MenuItem>
+
               <MenuItem
                 sx={{
                   display: "flex",
@@ -193,32 +198,68 @@ const PostWidget = ({
                   </Typography>
                 </Box>
               </MenuItem>
-            </>
+            </div>
           )}
         </Menu>
+        <EditModal
+          open={modalIsOpen}
+          onClose={handleModalClose}
+          picturePath={picturePath}
+          userPicturePath={userPicturePath}
+          description={description}
+          postId={postId}
+          name={name}
+        />
+
         <Dialog
           open={isOpen}
           onClose={() => setIsOpen(!isOpen)}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle color={primary}>
-            {" "}
-            {"Are you sure you want to delete this post?"}
-          </DialogTitle>
+          <FlexBetween>
+            <DialogTitle
+              fontSize={`${isMobile ? "0.7rem" : "1.1rem"}`}
+              component="h2"
+              color={primary}
+              fontWeight={500}
+            >
+              {" "}
+              {"Are you sure you want to delete this post?"}
+            </DialogTitle>
+            <IconButton onClick={() => setIsOpen(!isOpen)}>
+              <CloseOutlined
+                sx={{ fontSize: isMobile ? 16 : 26 }}
+                color={main}
+              />
+            </IconButton>
+          </FlexBetween>
+          <Divider />
+
           <DialogContent>
             <DialogContentText>
-              Selected post will be permanently deleted. There is no available
-              option to undo this action.
+              <Typography fontSize={isMobile ? 10 : 16}>
+                {" "}
+                Selected post will be permanently deleted. There is no available
+                option to undo this action.
+              </Typography>
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setIsOpen(!isOpen)}>Disagree</Button>
-  
-           <Button onClick={deletePostHandler} onClickCapture={()=>setIsOpen(!isOpen)} autoFocus>
-                Agree
-              </Button>   
-     
+            <Button
+              sx={{ fontSize: isMobile ? 10 : 12 }}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              onClick={deletePostHandler}
+              onClickCapture={() => setIsOpen(!isOpen)}
+              sx={{ fontSize: isMobile ? 10 : 12 }}
+            >
+              Agree
+            </Button>
           </DialogActions>
         </Dialog>
       </FlexBetween>

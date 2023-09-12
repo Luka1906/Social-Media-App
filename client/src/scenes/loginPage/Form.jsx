@@ -50,7 +50,7 @@ const Form = () => {
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
-      console.log(value, values[value]);
+ 
     }
     formData.append("picturePath", values.picture.name);
     console.log(values);

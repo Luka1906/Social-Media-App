@@ -1,6 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
-const fileHelper = require("../utils/file");
+const { deleteFile, updateFile } = require("../utils/file");
 /* CREATE */
 exports.createPost = async (req, res) => {
   try {
@@ -73,11 +73,51 @@ exports.likePost = async (req, res) => {
   }
 };
 
+exports.editPost = async (req, res) => {
+  try {
+    const { description, picturePath } = req.body;
+    const { id } = req.params;
+    const post = await Post.findById(id);
+    const path = post.picturePath;
+
+    
+    if (!description) {
+      res.status(404).json({ message: "Post not found" });
+    }
+
+    await Post.findByIdAndUpdate(id, { description: description });
+
+
+
+    if (picturePath) {
+      if (path) {
+        deleteFile(`public/assets/${path}`);
+        await Post.updateOne({ _id: id }, { $set: { picturePath } });
+      
+      } else {
+        await Post.updateOne({ _id: id }, { $set: { picturePath } });
+      }
+
+    } else {
+      await Post.updateOne({ _id: id }, { $unset: { picturePath: "" } });
+      // deleteFile(`public/assets/${path}`);
+
+      
+    }
+
+    const posts = await Post.find();
+
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
 /* DELETE */
 
 exports.deletePost = async (req, res) => {
   try {
-    const { id} = req.params;
+    const { id } = req.params;
 
     const post = await Post.findById(id);
 
@@ -85,12 +125,11 @@ exports.deletePost = async (req, res) => {
       res.status(404).json({ message: "Post not found" });
     } else {
       if (post.picturePath) {
-        fileHelper.deleteFile(`public/assets/${post.picturePath}`);
+        deleteFile(`public/assets/${post.picturePath}`);
       }
-      await Post.deleteOne({ _id: id });
-      const posts = await Post.find()
 
-     
+      await Post.deleteOne({ _id: id });
+      const posts = await Post.find();
 
       res.status(200).json({ message: "Success! Post deleted!", posts });
     }

@@ -52,6 +52,7 @@ export const colorTokens = {
               background: { 
                 default: colorTokens.grey[900],
                 alt: colorTokens.grey[800],
+                modal: colorTokens.grey[700]
               },
             }
           : {
@@ -71,6 +72,7 @@ export const colorTokens = {
               background: {
                 default: colorTokens.grey[10],
                 alt: colorTokens.grey[0],
+                modal: colorTokens.grey[0]
               },
             }),
       },

@@ -10,9 +10,11 @@ router.get("/:userId/posts", verifyToken, getUserPosts);
 
 /* update */
 router.put("/:id/like", verifyToken, likePost);
+// router.put("/:id/editPost", verifyToken, editPost)
 
 /* delete */
 router.delete("/:id/deletePost", verifyToken, deletePost)
+
 
 
 module.exports = router;

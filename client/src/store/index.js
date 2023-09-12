@@ -5,6 +5,7 @@ const initialState = {
     user: null,
     token: null,
     posts: [],
+  
 
 };
 
@@ -15,6 +16,7 @@ export const authSlice = createSlice({
         setMode: (state) => {
             state.mode = state.mode === "light" ? "dark" : "light";
         },
+       
         setLogin: (state,action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
@@ -38,11 +40,13 @@ export const authSlice = createSlice({
                 if(post._id === action.payload.post._id) return action.payload.post;
                 return post;
             });
+            console.log(updatedPosts)
              state.posts = updatedPosts;
-        }
+        },
+      
     }
 
 });
 
-export const {setMode, setLogin, setLogout, setFriends, setPosts, setPost} = authSlice.actions;
+export const {setMode, setLogin, setLogout, setFriends, setPosts, setPost, setIsEditing} = authSlice.actions;
 export default authSlice.reducer;
