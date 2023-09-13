@@ -79,6 +79,15 @@ exports.editPost = async (req, res) => {
     const { id } = req.params;
     const post = await Post.findById(id);
     const path = post.picturePath;
+    const image = req.file;
+    let imageName;
+
+    if(image) {
+      imageName = image.filename
+    }
+
+
+
 
     
     if (!description) {
@@ -89,13 +98,13 @@ exports.editPost = async (req, res) => {
 
 
 
-    if (picturePath) {
+    if (image) {
       if (path) {
         deleteFile(`public/assets/${path}`);
-        await Post.updateOne({ _id: id }, { $set: { picturePath } });
+        await Post.updateOne({ _id: id }, { $set: { picturePath: imageName } });
       
       } else {
-        await Post.updateOne({ _id: id }, { $set: { picturePath } });
+        await Post.updateOne({ _id: id }, { $set: { picturePath: imageName } });
       }
 
     } else {

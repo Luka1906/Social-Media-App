@@ -122,6 +122,7 @@ const EditModal = ({
         body: formData, 
       }
     );
+    console.log(image)
     const updatedPosts = await response.json();
     dispatch(setPosts({ posts: updatedPosts }));
 
