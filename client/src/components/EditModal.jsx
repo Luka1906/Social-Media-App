@@ -105,7 +105,7 @@ const EditModal = ({
     setImage(null);
     setDeleteImage(true);
   };
-  console.log(addImage);
+
 
   const editPostHandler = async () => {
     const formData = new FormData();
