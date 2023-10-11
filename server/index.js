@@ -15,7 +15,7 @@ const {createPost, editPost} = require("./controllers/posts")
 const {verifyToken} = require("./middleware/auth");
 // const User = require("./models/User");
 // const Post = require("./models/Post");
-const {users,posts }= require("./data/index")
+// const {users,posts }= require("./data/index")
 
 /* CONFIGURATIONS */
 

@@ -34,6 +34,7 @@ const MyPostWidget = ({ picturePath }) => {
     formData.append("description", post);
     if (image) {
       formData.append("picture", image);
+      formData.append("picturePath", image.name);
     }
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}posts`, {
       method: "POST",

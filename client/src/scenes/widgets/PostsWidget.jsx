@@ -57,7 +57,7 @@ const PostsWidget = ({ userId, isProfile}) => {
           comments,
         }) => (
           <PostWidget
-          key = {_id}
+          // key = {_id}
           postId = {_id}
           postUserId = {userId}
           name = {`${firstName} ${lastName}`}

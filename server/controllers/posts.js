@@ -4,8 +4,14 @@ const { deleteFile } = require("../utils/file");
 /* CREATE */
 exports.createPost = async (req, res) => {
   try {
-    const { userId, description } = req.body;
+    const { userId, description, picturePath } = req.body;
     const user = await User.findById(userId);
+  
+    
+    // if(image) {
+    //   imageName = req.file.fileName
+    // }
+  
     const newPost = new Post({
       userId,
       firstName: user.firstName,
@@ -13,7 +19,7 @@ exports.createPost = async (req, res) => {
       location: user.location,
       description,
       userPicturePath: user.picturePath,
-      picturePath: req.file.filename,
+      picturePath: picturePath && req.file.filename,
       likes: {},
       comments: [],
     });
