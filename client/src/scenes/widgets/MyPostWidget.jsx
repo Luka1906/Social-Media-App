@@ -1,8 +1,4 @@
-import {
-  EditOutlined,
-  DeleteOutlined,
-
-} from "@mui/icons-material";
+import { EditOutlined, DeleteOutlined } from "@mui/icons-material";
 import {
   Box,
   Divider,
@@ -11,7 +7,6 @@ import {
   useTheme,
   Button,
   IconButton,
-
 } from "@mui/material";
 
 import FlexBetween from "../../components/FlexBetween";
@@ -29,10 +24,9 @@ const MyPostWidget = ({ picturePath }) => {
   const [image, setImage] = useState(null);
   const [post, setPost] = useState("");
   const { palette } = useTheme();
-  const { _id} = useSelector((state) => state.user);
+  const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const medium = palette.neutral.medium;
-
 
   const postHandler = async () => {
     const formData = new FormData();
@@ -40,8 +34,6 @@ const MyPostWidget = ({ picturePath }) => {
     formData.append("description", post);
     if (image) {
       formData.append("picture", image);
-      formData.append("picturePath",  image.name );
-     
     }
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}posts`, {
       method: "POST",
@@ -54,14 +46,11 @@ const MyPostWidget = ({ picturePath }) => {
     setPost("");
   };
 
-
-
   return (
-    <WidgetWrapper >
-      <FlexBetween >
+    <WidgetWrapper>
+      <FlexBetween>
         <UserImage image={picturePath} />
         <InputBase
- 
           placeholder={`What's on your mind?`}
           onChange={(e) => setPost(e.target.value)}
           value={post}
@@ -71,7 +60,6 @@ const MyPostWidget = ({ picturePath }) => {
             borderRadius: "2rem",
             padding: "1rem 2rem",
           }}
-      
         />
       </FlexBetween>
       {isImage && (
@@ -95,7 +83,7 @@ const MyPostWidget = ({ picturePath }) => {
                   width="100%"
                   sx={{ "&:hover": { cursor: "pointer" } }}
                 >
-                  <input  {...getInputProps()} />
+                  <input {...getInputProps()} />
                   {!image ? (
                     <p>Add Image Here</p>
                   ) : (
@@ -119,12 +107,8 @@ const MyPostWidget = ({ picturePath }) => {
         </Box>
       )}
       <Divider sx={{ margin: "1.25rem 0" }} />
-    <OptionsBar
-      setIsImage={setIsImage}
-      isImage={isImage}
-    
-    />
-     <Button
+      <OptionsBar setIsImage={setIsImage} isImage={isImage} />
+      <Button
         disabled={!post}
         fullWidth
         onClickCapture={postHandler}
@@ -135,9 +119,8 @@ const MyPostWidget = ({ picturePath }) => {
           mt: "1.5rem",
         }}
       >
-         POST
+        POST
       </Button>
-
     </WidgetWrapper>
   );
 };

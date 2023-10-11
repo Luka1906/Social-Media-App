@@ -1,10 +1,10 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
-const { deleteFile, updateFile } = require("../utils/file");
+const { deleteFile } = require("../utils/file");
 /* CREATE */
 exports.createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
+    const { userId, description } = req.body;
     const user = await User.findById(userId);
     const newPost = new Post({
       userId,
@@ -13,7 +13,7 @@ exports.createPost = async (req, res) => {
       location: user.location,
       description,
       userPicturePath: user.picturePath,
-      picturePath,
+      picturePath: req.file.filename,
       likes: {},
       comments: [],
     });
@@ -74,44 +74,46 @@ exports.likePost = async (req, res) => {
 };
 
 exports.editPost = async (req, res) => {
-  try {
-    const { description, picturePath } = req.body;
-    const { id } = req.params;
-    const post = await Post.findById(id);
-    const path = post.picturePath;
-    const image = req.file;
-    let imageName;
+  const { description, initialPicture, editMode } = req.body;
+  const { id } = req.params;
+  const post = await Post.findById(id);
+  const path = post.picturePath;
+  const image = req.file;
+  let imageName;
 
-    if(image) {
-      imageName = image.filename
+  try {
+    if (image) {
+      imageName = image.filename;
     }
 
-
-
-
-    
     if (!description) {
       res.status(404).json({ message: "Post not found" });
     }
 
     await Post.findByIdAndUpdate(id, { description: description });
 
-
-
     if (image) {
       if (path) {
-        deleteFile(`public/assets/${path}`);
-        await Post.updateOne({ _id: id }, { $set: { picturePath: imageName } });
-      
+        if (imageName !== path) {
+          deleteFile(`public/assets/${path}`);
+          await Post.updateOne(
+            { _id: id },
+            { $set: { picturePath: imageName } }
+          );
+        }
       } else {
         await Post.updateOne({ _id: id }, { $set: { picturePath: imageName } });
       }
-
     } else {
-      await Post.updateOne({ _id: id }, { $unset: { picturePath: "" } });
-      // deleteFile(`public/assets/${path}`);
-
-      
+      if (editMode === "false") {
+        await Post.updateOne(
+          { _id: id },
+          { $set: { picturePath: initialPicture } }
+        );
+      } else {
+        await Post.updateOne({ _id: id }, { $set: { picturePath: "" } });
+        deleteFile(`public/assets/${path}`);
+      }
     }
 
     const posts = await Post.find();

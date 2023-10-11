@@ -9,10 +9,3 @@ exports.deleteFile = (filePath) => {
 };
 
 
-exports.updateFile = (filePath, newFilePath) => {
-  fs.writeFile(filePath, newFilePath, (err) => {
-    if (err) {
-      throw err;
-    }
-  });
-};

@@ -6,8 +6,7 @@ import {
   InputBase,
   IconButton,
   Button,
-  useMediaQuery
-
+  useMediaQuery,
 } from "@mui/material";
 import {
   CloseOutlined,
@@ -21,7 +20,7 @@ import Dropzone from "react-dropzone";
 import { setPosts } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useCallback, useState, useRef} from "react";
+import { useCallback, useState } from "react";
 
 const EditModal = ({
   open,
@@ -49,22 +48,21 @@ const EditModal = ({
   const [focus, setFocus] = useState(false);
   const [image, setImage] = useState(picturePath);
   const [addImage, setAddImage] = useState(false);
+  const [deleteImage, setDeleteImage] = useState(false);
 
   const isMobile = useMediaQuery("(max-width: 500px)");
-
 
   const style = {
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: `${isMobile? "20rem" : "30rem"}`,
+    width: `${isMobile ? "20rem" : "30rem"}`,
     height: image && !addImage ? 520 : "auto",
     bgcolor: bkg,
     boxShadow: "0 2px 8px rgba(0,0,0,0.50)",
     borderRadius: "0.5rem",
   };
-
 
   const inputDataHandler = (e) => {
     if (open) {
@@ -103,37 +101,39 @@ const EditModal = ({
   const removeAddImageHandler = () => {
     setAddImage(false);
   };
+  const deleteImageHandler = () => {
+    setImage(null);
+    setDeleteImage(true);
+  };
+  console.log(addImage);
 
   const editPostHandler = async () => {
     const formData = new FormData();
     formData.append("description", inputVal);
+    formData.append("initialPicture", picturePath);
+    formData.append("editMode", deleteImage);
+
     if (image) {
       formData.append("picture", image);
-      formData.append("picturePath", image.name);
-    } 
+    }
+
     const response = await fetch(
       `${process.env.REACT_APP_SERVER_URL}posts/${postId}/editPost`,
       {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
- 
         },
-        body: formData, 
+        body: formData,
       }
     );
-    console.log(image)
+
     const updatedPosts = await response.json();
     dispatch(setPosts({ posts: updatedPosts }));
 
     onClose();
     removeAddImageHandler();
   };
-
-  // const imageRef = useRef();
-  // console.log(imageRef.current.src)
-
-
 
   return (
     <Modal
@@ -229,7 +229,6 @@ const EditModal = ({
                     zIndex: -2,
                   }}
                   src={`${process.env.REACT_APP_SERVER_URL}assets/${picturePath}`}
-           
                 />
               </Box>
 
@@ -246,7 +245,7 @@ const EditModal = ({
                     backgroundColor: buttonBkg,
                   },
                 }}
-                onClick={() => setImage(null)}
+                onClick={deleteImageHandler}
               >
                 <CloseOutlined
                   sx={{
